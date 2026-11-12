@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAHIL KAUSHAL | AI Video Creator</title>
+<meta name="description" content="AI video creator – cinematic ads, product videos, music videos and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07070b; --card:#111119; --line:#23232f;
+    --text:#f3f3f7; --muted:#9a9aab;
+    --a1:#7c5cff; --a2:#00d4ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  .container{width:min(1150px,92%);margin:auto}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(7,7,11,.65);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;justify-content:space-between;align-items:center;height:68px}
+  .logo{font-family:'Space Grotesk';font-weight:700;font-size:1.25rem;letter-spacing:.5px}
+  .logo span{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;color:transparent}
+  .links{display:flex;gap:28px;align-items:center;font-size:.95rem;color:var(--muted)}
+  .links a:hover{color:var(--text)}
+  .btn{display:inline-block;padding:13px 28px;border-radius:999px;font-weight:500;background:linear-gradient(90deg,var(--a1),var(--a2));color:#fff;transition:.3s;border:none;cursor:pointer;font-size:1rem}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(124,92,255,.4)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+  .btn.ghost:hover{border-color:var(--a1);box-shadow:none}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;align-items:center;position:relative;padding-top:80px;overflow:hidden}
+  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(120px);opacity:.35;z-index:0}
+  .hero::before{width:480px;height:480px;background:var(--a1);top:-120px;left:-120px}
+  .hero::after{width:420px;height:420px;background:var(--a2);bottom:-120px;right:-100px}
+  .hero-in{position:relative;z-index:1;text-align:center;max-width:900px;margin:auto}
+  .tag{display:inline-block;padding:7px 18px;border:1px solid var(--line);border-radius:999px;font-size:.85rem;color:var(--muted);margin-bottom:26px;background:rgba(255,255,255,.03)}
+  .hero h1{font-size:clamp(2.6rem,7vw,5.4rem);font-weight:700;margin-bottom:22px}
+  .grad{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;color:transparent}
+  .hero p{color:var(--muted);font-size:1.15rem;max-width:620px;margin:0 auto 38px}
+  .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .stats{display:flex;justify-content:center;gap:50px;margin-top:60px;flex-wrap:wrap}
+  .stat h3{font-size:2.2rem}
+  .stat p{font-size:.9rem;margin:0}
+
+  /* SECTIONS */
+  section{padding:100px 0}
+  .sec-head{text-align:center;margin-bottom:55px}
+  .sec-head h2{font-size:clamp(2rem,4.5vw,3rem);margin-bottom:12px}
+  .sec-head p{color:var(--muted)}
+
+  /* FILTERS */
+  .filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+  .filters button{background:transparent;border:1px solid var(--line);color:var(--muted);padding:9px 22px;border-radius:999px;cursor:pointer;font-size:.92rem;transition:.25s;font-family:inherit}
+  .filters button.active,.filters button:hover{color:#fff;border-color:var(--a1);background:rgba(124,92,255,.15)}
+
+  /* VIDEO GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:26px}
+  .vcard{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:.35s}
+  .vcard:hover{transform:translateY(-8px);border-color:var(--a1);box-shadow:0 20px 50px rgba(124,92,255,.18)}
+  .thumb{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+  .thumb video,.thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:.5s}
+  .thumb video{pointer-events:none}
+  .vcard:hover .thumb video,.vcard:hover .thumb img{transform:scale(1.06)}
+  .play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.25);transition:.3s}
+  .play i{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);display:grid;place-items:center}
+  .play i::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+  .vcard:hover .play{background:rgba(0,0,0,.05)}
+  .vinfo{padding:18px 20px 22px}
+  .vinfo small{color:var(--a2);font-size:.78rem;letter-spacing:1px;text-transform:uppercase}
+  .vinfo h3{font-size:1.2rem;margin:6px 0 6px}
+  .vinfo p{color:var(--muted);font-size:.92rem}
+
+  /* SERVICES */
+  .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+  .svc{padding:34px 28px;background:var(--card);border:1px solid var(--line);border-radius:18px;transition:.3s}
+  .svc:hover{border-color:var(--a2);transform:translateY(-6px)}
+  .svc .ic{font-size:2rem;margin-bottom:16px}
+  .svc h3{font-size:1.25rem;margin-bottom:10px}
+  .svc p{color:var(--muted);font-size:.95rem}
+
+  /* ABOUT */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+  .about-img{aspect-ratio:1;border-radius:24px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;font-size:5rem;overflow:hidden}
+  .about-img img{width:100%;height:100%;object-fit:cover}
+  .about h2{font-size:2.6rem;margin-bottom:18px}
+  .about p{color:var(--muted);margin-bottom:16px}
+  .tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .tools span{padding:7px 16px;border:1px solid var(--line);border-radius:999px;font-size:.85rem;color:var(--muted)}
+
+  /* CONTACT */
+  .contact-box{text-align:center;padding:80px 30px;border-radius:28px;border:1px solid var(--line);background:radial-gradient(circle at top,rgba(124,92,255,.25),transparent 60%),var(--card)}
+  .contact-box h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:16px}
+  .contact-box p{color:var(--muted);margin-bottom:34px}
+  .contact-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  footer{padding:36px 0;text-align:center;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal.open{display:flex}
+  .modal-in{width:min(1000px,100%);display:flex;justify-content:center}
+  .modal-in iframe{width:100%;aspect-ratio:16/9;border-radius:14px;background:#000;border:0}
+  .wm-wrap{position:relative;width:fit-content;max-width:100%}
+  .wm-wrap video{display:block;max-width:100%;max-height:88vh;border-radius:14px;background:#000}
+  .wm{position:absolute;top:16px;right:20px;color:rgba(255,255,255,.45);font-weight:500;font-size:1rem;letter-spacing:1px;pointer-events:none;user-select:none;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+  .close{position:absolute;top:22px;right:30px;font-size:2.4rem;color:#fff;cursor:pointer;line-height:1}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(40px);transition:.8s}
+  .reveal.show{opacity:1;transform:none}
+
+  @media(max-width:800px){
+    .links a:not(.btn){display:none}
+    .about{grid-template-columns:1fr}
+    section{padding:70px 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container nav-in">
+    <a href="#" class="logo">SAHIL <span>KAUSHAL</span></a>
+    <div class="links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="btn" style="padding:10px 22px">Hire Me</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container hero-in">
+    <span class="tag">✦ AI Video Creator</span>
+    <h1>Turning Ideas Into <span class="grad">Cinematic AI Videos</span></h1>
+    <p>Ads, product videos, music videos &amp; brand stories — created with the latest AI tools, delivered fast.</p>
+    <div class="hero-btns">
+      <a href="#work" class="btn">View My Work</a>
+      <a href="#contact" class="btn ghost">Let's Talk</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><h3 class="grad">50+</h3><p>Videos Created</p></div>
+      <div class="stat"><h3 class="grad">25+</h3><p>Happy Clients</p></div>
+      <div class="stat"><h3 class="grad">48 hrs</h3><p>Fast Delivery</p></div>
+    </div>
+  </div>
+</header>
+
+<!-- WORK -->
+<section id="work">
+  <div class="container">
+    <div class="sec-head reveal">
+      <h2>Featured <span class="grad">Work</span></h2>
+      <p>Click on any video to watch it in full screen.</p>
+    </div>
+    <div class="filters reveal" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="sec-head reveal">
+      <h2>What I <span class="grad">Offer</span></h2>
+      <p>Everything you need to stand out with AI-powered video.</p>
+    </div>
+    <div class="services">
+      <div class="svc reveal"><div class="ic">🎬</div><h3>AI Commercials</h3><p>High-impact ads for brands, products and social media campaigns.</p></div>
+      <div class="svc reveal"><div class="ic">🎵</div><h3>Music Videos</h3><p>Visual storytelling that matches the mood and rhythm of your track.</p></div>
+      <div class="svc reveal"><div class="ic">📱</div><h3>Reels &amp; Shorts</h3><p>Vertical, scroll-stopping content for Instagram, YouTube and TikTok.</p></div>
+      <div class="svc reveal"><div class="ic">🧠</div><h3>Brand Stories</h3><p>Cinematic explainers and storytelling videos for your business.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container about">
+    <div class="about-img reveal">
+      <!-- apni photo lagani ho to: <img src="images/me.jpg" alt="My photo"> -->
+      🎥
+    </div>
+    <div class="reveal">
+      <h2>Hi, I'm <span class="grad">Sahil Kaushal</span></h2>
+      <p>I'm an AI video creator who helps brands and creators turn ideas into stunning visuals. From script and concept to final edit, I handle the whole process so you can focus on your business.</p>
+      <p>Every project is made with attention to detail, clean editing and fast turnaround.</p>
+      <div class="tools">
+        <span>Runway</span><span>Kling</span><span>Veo</span><span>Midjourney</span><span>ElevenLabs</span><span>CapCut</span><span>Premiere Pro</span><span>Higgsfield</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-box reveal">
+      <h2>Ready to create something <span class="grad">amazing</span>?</h2>
+      <p>Tell me about your project and let's make it happen.</p>
+      <div class="contact-btns">
+        <a class="btn" href="https://wa.me/919988831443?text=Hi%2C%20I%20saw%20your%20portfolio" target="_blank">Upwork</a>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© <span id="yr"></span> Sahil kaushal. All rights reserved.</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <span class="close" id="close">&times;</span>
+  <div class="modal-in" id="modalBody"></div>
+</div>
+
+<script>
+/* ============================================================
+   👇 YAHAN APNI VIDEOS ADD KARO (sirf yahi section edit karna hai)
+
+   type: "file"    -> video aapke repo mein hai (videos/ folder)
+   type: "youtube" -> YouTube video ka ID (link ke aakhir ka code)
+   type: "vimeo"   -> Vimeo video ka ID
+
+   thumb: (optional) image ka path, e.g. "images/thumb1.jpg"
+   ============================================================ */
+const videos = [
+  {
+    title: "Dance Like a Viking Music",
+    desc: "Vertical reel for youtube.",
+    category: "Reels",
+    type: "file",
+    src: "videos/video4.mp4",
+    thumb: ""
+  },
+  // {
+  //   title: "Neon City Music Video",
+  //   desc: "Cyberpunk visuals synced with the beat.",
+  //   category: "Music Video",
+  //   type: "youtube",
+  //   src: "dQw4w9WgXcQ",          // <- apni YouTube video ID daalo
+  //   thumb: ""
+  // },
+  {
+    title: "Last Goodbye Music",
+    desc: "Vertical reel for youtube.",
+    category: "Reels",
+    type: "file",
+    src: "videos/video3.mp4",
+    thumb: ""
+  },
+  {
+    title: "Brand Story – Magic Box.",
+    desc: "A 56 sec brand film.",
+    category: "Brand Story",
+    type: "file",
+    src: "videos/video2.mp4",
+    thumb: ""
+  },
+  {
+    title: "Wild Blood Music",
+    desc: "Vertical reel for youtube.",
+    category: "Reels",
+    type: "file",
+    src: "videos/video1.mp4",
+    thumb: ""
+  },
+  {
+    title: "Iron Voice Music",
+    desc: "Vertical reel for youtube.",
+    category: "Reels",
+    type: "file",
+    src: "videos/video5.mp4",
+    thumb: ""
+  },
+  {
+    title: "Last Goodbye 2 Music",
+    desc: "Vertical reel for youtube.",
+    category: "Reels",
+    type: "file",
+    src: "videos/video6.mp4",
+    thumb: ""
+  },
+  {
+    title: "War Drum Music",
+    desc: "Vertical reel for youtube.",
+    category: "Reels",
+    type: "file",
+    src: "videos/video7.mp4",
+    thumb: ""
+  }
+
+];
+/* ============================================================ */
+
+/* 👇 Watermark text jo video ke upar dikhega */
+const WATERMARK = "© SAHIL KAUSHAL";
+
+/* Right-click aur video drag band (casual download roakne ke liye) */
+document.addEventListener('contextmenu', e => {
+  if (e.target.closest('video, .thumb, .modal')) e.preventDefault();
+});
+document.addEventListener('dragstart', e => {
+  if (e.target.closest('video, img')) e.preventDefault();
+});
+
+const grid = document.getElementById('grid');
+const filtersEl = document.getElementById('filters');
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modalBody');
+
+function thumbHTML(v){
+  if(v.thumb) return `<img src="${v.thumb}" alt="${v.title}" loading="lazy">`;
+  if(v.type==='youtube') return `<img src="https://img.youtube.com/vi/${v.src}/hqdefault.jpg" alt="${v.title}" loading="lazy">`;
+  if(v.type==='file') return `<video src="${v.src}#t=0.5" muted preload="metadata" playsinline disablePictureInPicture></video>`;
+  return `<div style="width:100%;height:100%;background:#1a1a26"></div>`;
+}
+
+function render(cat='All'){
+  grid.innerHTML = '';
+  videos.filter(v => cat==='All' || v.category===cat).forEach(v=>{
+    const el = document.createElement('div');
+    el.className = 'vcard reveal show';
+    el.innerHTML = `
+      <div class="thumb">${thumbHTML(v)}<div class="play"><i></i></div></div>
+      <div class="vinfo"><small>${v.category}</small><h3>${v.title}</h3><p>${v.desc}</p></div>`;
+    el.onclick = () => openVideo(v);
+    grid.appendChild(el);
+  });
+}
+
+function buildFilters(){
+  const cats = ['All', ...new Set(videos.map(v=>v.category))];
+  cats.forEach((c,i)=>{
+    const b = document.createElement('button');
+    b.textContent = c;
+    if(i===0) b.classList.add('active');
+    b.onclick = () => {
+      document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      render(c);
+    };
+    filtersEl.appendChild(b);
+  });
+}
+
+function openVideo(v){
+  if(v.type==='youtube')
+    modalBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${v.src}?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  else if(v.type==='vimeo')
+    modalBody.innerHTML = `<iframe src="https://player.vimeo.com/video/${v.src}?autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  else
+    modalBody.innerHTML = `<div class="wm-wrap">
+      <video src="${v.src}" controls controlsList="nodownload noremoteplayback" disablePictureInPicture autoplay playsinline oncontextmenu="return false"></video>
+      <div class="wm">${WATERMARK}</div>
+    </div>`;
+  modal.classList.add('open');
+}
+function closeModal(){ modal.classList.remove('open'); modalBody.innerHTML=''; }
+document.getElementById('close').onclick = closeModal;
+modal.onclick = e => { if(e.target===modal) closeModal(); };
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+/* scroll reveal */
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); }), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+buildFilters();
+render();
+</script>
+</body>
+</html>
